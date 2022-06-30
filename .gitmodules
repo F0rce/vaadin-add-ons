@@ -1,0 +1,28 @@
+[submodule "ace"]
+	path = ace
+	url = https://github.com/F0rce/ace.git
+	branch = 2.x
+[submodule "vaadin-swagger"]
+	path = vaadin-swagger
+	url = https://github.com/F0rce/vaadin-swagger.git
+	branch = main
+[submodule "viz"]
+	path = viz
+	url = https://github.com/F0rce/viz
+	branch = main
+[submodule "signature-widget"]
+	path = signature-widget
+	url = https://github.com/F0rce/signature-widget
+	branch = master
+[submodule "cropper"]
+	path = cropper
+	url = https://github.com/F0rce/cropper
+	branch = main
+[submodule "Upload-Helper"]
+	path = Upload-Helper
+	url = https://github.com/F0rce/Upload-Helper.git
+	branch = main
+[submodule "Notify"]
+	path = Notify
+	url = https://github.com/F0rce/Notify.git
+	branch = main
