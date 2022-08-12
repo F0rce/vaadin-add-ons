@@ -1,0 +1,47 @@
+name: 'Submodules Sync'
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    name: 'Submodules Sync'
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.BOT_GITHUB_TOKEN }}
+        submodules: true
+        persist-credentials: false
+    
+    - name: Import @F0rceBot GPG key for signing commits
+      id: import-gpg
+      uses: crazy-max/ghaction-import-gpg@v5
+      with:
+        gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+        passphrase: ${{ secrets.GPG_PASSPHRASE }}
+        git_config_global: true
+        git_config_signingkey: true
+        git_commit_gpgsign: true
+      
+    - name: Git Submodule Update
+      run: |
+        git pull --recurse-submodules
+        git submodule update --remote --recursive
+
+    - name: Commit update
+      run: |
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+        git commit -am "Auto updated submodule references" && git push || echo "No changes to commit"
+      env:
+        GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
+        GIT_AUTHOR_NAME: ${{ steps.import-gpg.outputs.name }}
+        GIT_AUTHOR_EMAIL: ${{ steps.import-gpg.outputs.email }}
+        GIT_COMMITTER_NAME: ${{ steps.import-gpg.outputs.name }}
+        GIT_COMMITTER_EMAIL: ${{ steps.import-gpg.outputs.email }}
